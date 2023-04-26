@@ -1,9 +1,7 @@
 package com.demo.dataanalyticrestfulapi.Reposity;
 
 import com.demo.dataanalyticrestfulapi.model.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,7 +15,12 @@ public interface UserRepository {
     List<User> allUsers();
 
     List<User> findUserByUsername(String username);
-    int createNewUser(User user);
+
+    @Insert("insert into users_tb(username, gender, address) \n" +
+            "values (#{user.username},#{user.gender},#{user.address})")
+    int createNewUser(@Param("user") User user);
+
+
     int updateUser(User user);
 
     @Result(property = "userId",column = "id")

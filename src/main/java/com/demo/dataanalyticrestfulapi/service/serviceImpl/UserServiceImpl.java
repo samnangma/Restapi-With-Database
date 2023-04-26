@@ -14,6 +14,8 @@ public class UserServiceImpl implements UserService {
     UserServiceImpl(UserRepository userRepository){
         this.userRepository = userRepository;
     }
+
+
     @Override
     public List<User> allUsers() {
         return userRepository.allUsers();
@@ -31,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int createNewUser(User user) {
-        return 0;
+        return userRepository.createNewUser(user);
     }
 
     @Override
