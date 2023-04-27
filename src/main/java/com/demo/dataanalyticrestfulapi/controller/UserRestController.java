@@ -13,6 +13,15 @@ import java.util.List;
 public class UserRestController {
 
     private final UserService userService;
+
+    private boolean isUserFounds(int id){
+        User user = userService.findUserById(id);
+        return user != null;
+    }
+
+    private Response<User> userNotFound(int id){
+        return Response.<User>notFound().setMessage("Cannot find user with id: "+id).setSuccess(false).setStatus(Response.Status.NOT_FOUND);
+    }
     UserRestController(UserService userService){
         this.userService = userService;
     }
@@ -56,4 +65,35 @@ public class UserRestController {
         }
     }
 
+    @PutMapping("/{id}")
+    public Response<User> updateUser(@PathVariable int id , @RequestBody User user){
+        try {
+            if (isUserFounds(id)){
+                user.setUserId(id);
+                userService.updateUser(user, id);
+                return Response.<User>updateSuccess().setPayload(user).setMessage("Update User Successfully :) , Congratulations");
+            }else {
+                return userNotFound(id);
+            }
+        }catch (Exception ex){
+            return Response.<User>exception().setMessage("Update User Not Success , :( Please try again ").setSuccess(false);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public Response<User> removeUser(@PathVariable int id){
+        try {
+            if (isUserFounds(id)){
+                userService.removeUSer(id);
+                return Response.<User>deleteSuccess().setMessage("Delete Successfully! , thank you");
+            }else {
+                return userNotFound(id);
+            }
+        }catch (Exception ex){
+            return Response.<User>exception().setMessage("Delete User Not Success... :( Please try again");
+        }
+    }
 }
+
+
+

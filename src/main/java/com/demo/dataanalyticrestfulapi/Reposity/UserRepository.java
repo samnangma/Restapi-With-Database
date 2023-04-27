@@ -26,8 +26,6 @@ public interface UserRepository {
     @Results({
             @Result(property = "accountName",column = "account_name"),
             @Result(property = "accountNumber", column = "account_no"),
-//            @Result(property ="transferLimit", column = "transfer_limit"),
-//            @Result(property = "password", column = "passcode"),
             @Result(property = "phoneNumber",column = "phone_number"),
             @Result(property = "transferLimit",column = "transferLimit"),
             @Result(property = "accountType", column = "account_type",
@@ -48,7 +46,12 @@ public interface UserRepository {
     @Select("select * FROM users_tb where id = #{id}")
     User findUserByID(int id);
 
-    int updateUser(User user);
+    @Update("update users_tb\n" +
+            "set username = #{user.username}, gender = #{user.gender}, address = #{user.address}\n" +
+            "where id = #{id}")
+    int updateUser(User user, int id);
 
+    @Delete("delete from users_tb\n" +
+            "where id = #{id}")
     int removeUser(int id);
 }

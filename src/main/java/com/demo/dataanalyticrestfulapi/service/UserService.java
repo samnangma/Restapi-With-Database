@@ -11,7 +11,7 @@ public interface UserService {
     User findUserById(int id);
 
     int createNewUser(User user);
-    int updateUser(User user);
+    int updateUser(User user, int id);
     int removeUSer(int id);
 
     List<UserAccount> getAllUserAccounts();
