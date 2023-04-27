@@ -1,12 +1,15 @@
 package com.demo.dataanalyticrestfulapi.controller;
 
 import com.demo.dataanalyticrestfulapi.model.User;
+import com.demo.dataanalyticrestfulapi.model.UserAccount;
+import com.demo.dataanalyticrestfulapi.model.response.AccountResponse;
 import com.demo.dataanalyticrestfulapi.service.UserService;
+import com.demo.dataanalyticrestfulapi.utils.Response;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-
+@RequestMapping("/user")
 public class UserRestController {
 
     private final UserService userService;
@@ -18,7 +21,7 @@ public class UserRestController {
     List<User> getAllUser(){
         return userService.allUsers();
     }
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public User findUserByID(@PathVariable int id){
         return userService.findUserById(id);
 
@@ -35,12 +38,22 @@ public class UserRestController {
                 return "Cannot create a new user";
             }
 
-
-
         } catch (Exception exception){
             return exception.getMessage();
         }
 //        return "Successfully";
+    }
+
+    @PostMapping("/user-accounts")
+    public Response<List<UserAccount>> getAllUserAccounts(){
+        try {
+            List<UserAccount> data = userService.getAllUserAccounts();
+                    return Response.<List<UserAccount>>ok().setPayload(data).setMessage("Successfully retrieved all users accounts");
+        } catch (Exception ex){
+            return Response.<List<UserAccount>>exception().setMessage("Exception occurs ! Failed to retrieved all users accounts!")
+                    .setSuccess(false);
+
+        }
     }
 
 }

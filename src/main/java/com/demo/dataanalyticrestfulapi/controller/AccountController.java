@@ -4,6 +4,7 @@ import com.demo.dataanalyticrestfulapi.mapper.AutoAccountMapper;
 import com.demo.dataanalyticrestfulapi.model.Account;
 import com.demo.dataanalyticrestfulapi.model.response.AccountResponse;
 import com.demo.dataanalyticrestfulapi.service.AccountService;
+import com.demo.dataanalyticrestfulapi.utils.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
@@ -29,21 +30,16 @@ public class AccountController {
     }
 
     @GetMapping("/all-accounts")
-    public ResponseEntity<?> getAllAccounts(){
+    public Response<List<AccountResponse>> getAllAccounts(){
         try{
             List<Account> allAccount = accountService.getAllAccounts();
             List<AccountResponse> accountResponses = autoAccountMapper.mapToAccountResponse(allAccount);
-            HashMap<String, Object > response = new HashMap<>();
-            response.put("payload", accountResponses);
-            response.put("message","Successfully retrieve all accounts info!");
-            response.put("Status", HttpStatus.OK);
 
-
-            return ResponseEntity.ok().body(response);
+            return Response.<List<AccountResponse>>ok().setPayload(accountResponses).setMessage("Successfully retrieved all account information");
 
         } catch (Exception exception){
             System.out.println("Something Wrong: "+exception.getMessage());
-            return ResponseEntity.ok().body("Failed to retrevied the accounts");
+            return Response.<List<AccountResponse>>exception().setMessage("Failed to retrevied the accounts");
         }
     }
 }
