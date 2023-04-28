@@ -29,6 +29,13 @@ public class Response <T>  {
         response.setStatus(Status.OK);
         return response;
     }
+    public static <T> Response <T> BAD_REQUEST(){
+        Response<T> response = new Response<>();
+        response.setSuccess(true);
+        response.setStatus(Status.BAD_REQUEST);
+        return  response;
+    }
+
    public static <T> Response <T> createdSuccess(){
        Response<T> response = new Response<>();
        response.setStatus(Status.CREATE_SUCCESS);

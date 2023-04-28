@@ -1,7 +1,9 @@
 package com.demo.dataanalyticrestfulapi.controller;
 
+import com.demo.dataanalyticrestfulapi.Reposity.UserRepository;
 import com.demo.dataanalyticrestfulapi.model.User;
 import com.demo.dataanalyticrestfulapi.model.UserAccount;
+import com.demo.dataanalyticrestfulapi.model.request.UserRequest;
 import com.demo.dataanalyticrestfulapi.model.response.AccountResponse;
 import com.demo.dataanalyticrestfulapi.service.UserService;
 import com.demo.dataanalyticrestfulapi.utils.Response;
@@ -37,18 +39,20 @@ public class UserRestController {
     }
 
     @PostMapping("/new-user")
-    public String createUser(@RequestBody User user){
-        System.out.println("Affect row : "+user);
-        try{
-            int affectRow = userService.createNewUser(user);
-            if(affectRow > 0){
-                return "Create user Successfully!";
-            } else{
-                return "Cannot create a new user";
-            }
+    public Response<User> createUser(@RequestBody UserRequest request){
+        try {
+            int userID = userService.createNewUser(request);
+            if(userID > 0 ){
+                User response = new User().setUsername(request.getUsername()).setAddress(request.getAddress()).setGender(request.getGender()).
+                setUserId(userID);
 
+                return Response.<User>createdSuccess().setPayload(response).setMessage("Create User Successfully").setSuccess(true);
+
+            } else {
+                return Response.<User>BAD_REQUEST().setMessage("Failed to create User");
+            }
         } catch (Exception exception){
-            return exception.getMessage();
+            return Response.<User>exception().setMessage("Exception occurs! Failed to create a new user").setSuccess(false);
         }
 //        return "Successfully";
     }

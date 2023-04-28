@@ -3,6 +3,7 @@ package com.demo.dataanalyticrestfulapi.service.serviceImpl;
 import com.demo.dataanalyticrestfulapi.Reposity.UserRepository;
 import com.demo.dataanalyticrestfulapi.model.User;
 import com.demo.dataanalyticrestfulapi.model.UserAccount;
+import com.demo.dataanalyticrestfulapi.model.request.UserRequest;
 import com.demo.dataanalyticrestfulapi.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int createNewUser(User user) {
+    public int createNewUser(UserRequest user) {
         return userRepository.createNewUser(user);
     }
 

@@ -3,6 +3,7 @@ package com.demo.dataanalyticrestfulapi.Reposity;
 import com.demo.dataanalyticrestfulapi.model.Account;
 import com.demo.dataanalyticrestfulapi.model.User;
 import com.demo.dataanalyticrestfulapi.model.UserAccount;
+import com.demo.dataanalyticrestfulapi.model.request.UserRequest;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -40,7 +41,7 @@ public interface UserRepository {
 
     @Insert("insert into users_tb(username, gender, address) \n" +
             "values (#{user.username},#{user.gender},#{user.address})")
-    int createNewUser(@Param("user") User user);
+    int createNewUser(@Param("user") UserRequest user);
 
     @Result(property = "userId",column = "id")
     @Select("select * FROM users_tb where id = #{id}")
