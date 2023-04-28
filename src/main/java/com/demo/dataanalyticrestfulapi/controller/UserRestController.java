@@ -29,12 +29,28 @@ public class UserRestController {
     }
 
     @GetMapping("/allusers")
-    List<User> getAllUser(){
-        return userService.allUsers();
+    public Response<List<User>> getAllUser(){
+        try {
+            List<User> response = userService.allUsers();
+            return Response.<List<User>>ok().setPayload(response).setMessage("Successfully retrieved all users ! ");
+        } catch (Exception ex){
+            return Response.<List<User>>exception().setMessage("Failed to retrived the users! Exception occured ! ");
+        }
+
     }
     @GetMapping("/{id}")
-    public User findUserByID(@PathVariable int id){
-        return userService.findUserById(id);
+    public Response<User> findUserByID(@PathVariable int id){
+        try {
+            User response  = userService.findUserById(id);
+            if ( response != null){
+                return Response.<User>ok().setPayload(response).setSuccess(true).setMessage("Suceessfully retrived user with id = "+id);
+            } else {
+                return Response.<User>notFound().setMessage("User with id " + id + "doesn't exist").setSuccess(false);
+            }
+        } catch (Exception ex){
+            return Response.<User>exception().setMessage("Failed to retrieved user wiht id = " + id);
+        }
+
 
     }
 
